@@ -17,18 +17,16 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string().min(5,'Too Short!').required('Required')
 });
 export default function App() {
+  
+  const { handleBlur, handleChange, handleSubmit,values, errors, touched } = useFormik({
+    initialValues:{email: "", password: "" },
+    validationSchema:SignupSchema,
+    onSubmit :(values) => console.log(values),
+  });
+  const reTouchedEmail = touched.email ? styles.inputBoxActive : styles.inputBoxInActive
   return (
     <View style={styles.container}>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        validationSchema={SignupSchema}
-        onSubmit={(values) => console.log(values)}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values, touched, errors, }) => {
-          const reTouchedEmail = touched.email ? styles.inputBoxActive : styles.inputBoxInActive;
-          
-          return (
-            <>
+      
               <View style={[styles.inputBox, reTouchedEmail ]}>
                 <TextInput
                   onChangeText={handleChange('email')}
@@ -63,10 +61,8 @@ export default function App() {
                   </View>
                 </TouchableWithoutFeedback>
               </View>
-            </>
-          )
-        }}
-      </Formik>
+            
+     
     </View>
   );
 }
